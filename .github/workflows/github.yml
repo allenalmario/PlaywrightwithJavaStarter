@@ -1,0 +1,61 @@
+#Optional - The name of the workflow as it will appear in the "Actions" tab of the GitHub repository.
+name: Playwright with Java Test Automation Run
+
+
+#controls when the action will run
+#and specifies the trigger for this workflow (which is workflow_dispatch).
+on:
+  #The "workflow_dispatch" event allows you to manually trigger a workflow run through the GitHub Actions UI
+  workflow_dispatch
+
+
+#Groups together all the jobs that run in the Playwright with Java Test Automation Run workflow.
+jobs:
+  #this workflow contains jobs called "build"
+  build:
+    #the type of runner that the job will run on
+    #    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    #Groups together all the steps that run in the build job.
+    steps:
+      #Each item nested under this section is a separate action or shell script.
+      - name: Step 1 - checkout main branch from GitHub
+        uses: actions/checkout@v2
+      - name: Step 2 - Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Step 3 - Build with Maven
+        #The run keyword tells the job to execute a command on the runner
+        run: mvn surefire-report:report
+        #This is a user-defined name for the step. It indicates that the step is responsible
+        #for archiving the "index.html" file related to the serenity BDD reports
+      - name: Step 4 - Archive Surefire report Index HTML
+        #This line specifies the actions that's used for this step
+        #uses "upload-artifact" to upload a file or directory
+        #as an artifact that can be accessed later in the workflow or other actions
+        uses: actions/upload-artifact@v2
+        #this section begins the list of input parameters for the 'upload-artifact' action
+        with:
+          #this parameter specifies the name of the artifact
+          #artifact will be named serenity-index
+          name: surefire-report-index
+          #this parameter specifies the path to the file or directory you want to archive
+          #as the artifact. it points to the index.html file located
+          # in target/site/serenity directory of your project.
+          #this artifact will be archived as the "serenity-index" artifact
+          path: target/site/surefire-report.html
+      #this is a step that deploys your serenity reports to github pages
+      - name: Step 5 - Deploy to Github Pages
+        #this line specifies the github actions action that is used for this step. it uses this
+        #action to deploy the reports
+        uses: peaceiris/actions-gh-pages@v3
+        #this section beings the list of input parameters for the action above
+        with:
+          #this parameter provides the github token for authentication
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          #this parameter specifies the directory that contains the serenity reports
+          #the action will deploy the contents of this directory to github pages
+          publish_dir: ./target/site/surefire-report
