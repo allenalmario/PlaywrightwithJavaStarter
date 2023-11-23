@@ -32,7 +32,9 @@ jobs:
         run: mvn surefire-report:report
         #This is a user-defined name for the step. It indicates that the step is responsible
         #for archiving the "surefire-report.html" file related to the surefire report
-      - name: Step 4 - Archive Surefire report Index HTML
+      - name: Step 4 - Rename Surefire report to index.html
+        run: mv target/site/surefire-report.html target/site/index.html
+      - name: Step 5 - Archive Surefire report Index HTML
         #This line specifies the actions that's used for this step
         #uses "upload-artifact" to upload a file or directory
         #as an artifact that can be accessed later in the workflow or other actions
@@ -46,9 +48,9 @@ jobs:
           #as the artifact. it points to the surefire-report.html file located
           # in target/site directory of your project.
           #this artifact will be archived as the "surefire-report-index" artifact
-          path: target/site/surefire-report.html
+          path: target/site/index.html
       #this is a step that deploys your surefire report to github pages
-      - name: Step 5 - Deploy to Github Pages
+      - name: Step 6 - Deploy to Github Pages
         #this line specifies the github actions action that is used for this step. it uses this
         #action to deploy the reports
         uses: peaceiris/actions-gh-pages@v3
