@@ -9,3 +9,5 @@ You can use this written documentation I wrote to build the framework yourself. 
 If you need a more visual resource, follow this YouTube playlist I followed to create the framework: https://www.youtube.com/playlist?list=PLFGoYjJG_fqrEjt35Z1jxrYk5JXWQa_-D 
 
 The framework has a gitlab.yml file which allows test excecution runs on Github actions by running a workflow and the surefire-report.html that JUnit produces after test execution completion is deployed to the repository's Github page.
+
+Fork or clone this repository to start a Playwright with Java test automation framework and alter it as needed. Happy Automated Testing!
