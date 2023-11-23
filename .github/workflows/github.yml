@@ -31,7 +31,7 @@ jobs:
         #The run keyword tells the job to execute a command on the runner
         run: mvn surefire-report:report
         #This is a user-defined name for the step. It indicates that the step is responsible
-        #for archiving the "index.html" file related to the serenity BDD reports
+        #for archiving the "surefire-report.html" file related to the surefire report
       - name: Step 4 - Archive Surefire report Index HTML
         #This line specifies the actions that's used for this step
         #uses "upload-artifact" to upload a file or directory
@@ -40,14 +40,14 @@ jobs:
         #this section begins the list of input parameters for the 'upload-artifact' action
         with:
           #this parameter specifies the name of the artifact
-          #artifact will be named serenity-index
+          #artifact will be named surefire-report-index
           name: surefire-report-index
           #this parameter specifies the path to the file or directory you want to archive
-          #as the artifact. it points to the index.html file located
-          # in target/site/serenity directory of your project.
-          #this artifact will be archived as the "serenity-index" artifact
+          #as the artifact. it points to the surefire-report.html file located
+          # in target/site directory of your project.
+          #this artifact will be archived as the "surefire-report-index" artifact
           path: target/site/surefire-report.html
-      #this is a step that deploys your serenity reports to github pages
+      #this is a step that deploys your surefire report to github pages
       - name: Step 5 - Deploy to Github Pages
         #this line specifies the github actions action that is used for this step. it uses this
         #action to deploy the reports
@@ -58,4 +58,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           #this parameter specifies the directory that contains the serenity reports
           #the action will deploy the contents of this directory to github pages
-          publish_dir: ./target/site/surefire-report
+          publish_dir: ./target/site
