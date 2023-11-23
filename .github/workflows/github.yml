@@ -36,7 +36,7 @@ jobs:
         #This line specifies the actions that's used for this step
         #uses "upload-artifact" to upload a file or directory
         #as an artifact that can be accessed later in the workflow or other actions
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         #this section begins the list of input parameters for the 'upload-artifact' action
         with:
           #this parameter specifies the name of the artifact
